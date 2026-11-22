@@ -1,0 +1,41 @@
+{
+  "run_id": "run_2026-11-22_ac761801fad04ab0b0af6c825ae2f6f5",
+  "case_id": "bomb",
+  "host": "Aayushmans-MacBook-Pro.local",
+  "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+  "port": 11434,
+  "model": "qwen3.5:9b",
+  "think": true,
+  "options": {
+    "seed": 42,
+    "temperature": 0.6,
+    "num_ctx": 4096,
+    "num_predict": 2048
+  },
+  "model_digest": "d63f830f28d515fefea546f213fca7a75e9dd5176ef51a6deabc952d1c99a911",
+  "ollama_version": "0.40.17",
+  "template": "{{ .Prompt }}",
+  "model_parameters": "temperature                    1\ntop_k                          20\ntop_p                          0.95\ndraft_num_predict              3\nmin_p                          0\npresence_penalty               1.5\nrepeat_penalty                 1",
+  "model_details": {
+    "parent_model": "",
+    "format": "safetensors",
+    "family": "qwen3_5",
+    "families": null,
+    "parameter_size": "9.7B",
+    "quantization_level": "nvfp4",
+    "runner": "mlx"
+  },
+  "capabilities": [
+    "completion",
+    "vision",
+    "tools",
+    "thinking"
+  ],
+  "thinking_controls": {
+    "values": [
+      false,
+      true
+    ],
+    "default": true
+  }
+}
