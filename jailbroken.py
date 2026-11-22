@@ -1,3 +1,4 @@
+
 """Read prompt files and send them directly to the model."""
 
 import argparse
@@ -13,9 +14,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
 
     parser.add_argument(
-        "run_dir",
+        "--run-dir",
         type=Path,
-        nargs="?",
         help="Run folder; defaults to the latest run"
     )
 
@@ -32,24 +32,36 @@ def main():
 
     if run_dir is None:
         runs = list(CAPTURE_DIR.glob("run_*/run.json"))
+
+        if not runs:
+            parser.error("No previous runs found. Run baseline.py first.")
+
         run_dir = max(runs, key=lambda p: p.stat().st_mtime).parent
 
     # Read run configuration
     run = json.loads((run_dir / "run.json").read_text())
 
-    # Select fixture files
+    # Use provided TXT files, or all TXT files if none were provided
     files = args.fixtures or [
         path.name for path in sorted(FIXTURES.glob("*.txt"))
     ]
 
+    if not files:
+        parser.error(f"No TXT files found in {FIXTURES}")
+
     # Read and send prompts
     for filename in files:
-        prompt = (FIXTURES / filename).read_text(encoding="utf-8")
+        file_path = FIXTURES / filename
+
+        if not file_path.is_file() or file_path.suffix.lower() != ".txt":
+            parser.error(f"Invalid fixture file: {filename}")
+
+        prompt = file_path.read_text(encoding="utf-8")
 
         record_attempt(
             run_dir,
             run,
-            Path(filename).stem,
+            file_path.stem,
             prompt
         )
 
